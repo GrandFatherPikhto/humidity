@@ -1,0 +1,154 @@
+menu "Humidity Configuration"
+    menu "WI-FI Station Configuration"
+
+        config ESP_WIFI_SSID
+            string "WiFi SSID"
+            default "SSID"
+            help
+                SSID (network name) for the example to connect to.
+    
+        config ESP_WIFI_PASSWORD
+            string "WiFi Password"
+            default "WiFi Password"
+            help
+                WiFi password (WPA or WPA2) for the example to use.
+    
+        config ESP_MAXIMUM_RETRY
+            int "Maximum retry"
+            default 5
+            help
+                Set the Maximum retry to avoid station reconnecting to the AP unlimited when the AP is really inexistent.
+    
+        choice ESP_WIFI_SCAN_AUTH_MODE_THRESHOLD
+            prompt "WiFi Scan auth mode threshold"
+            default ESP_WIFI_AUTH_WPA2_PSK
+            help
+                The weakest authmode to accept in the scan mode.
+                This value defaults to ESP_WIFI_AUTH_WPA2_PSK incase password is present and ESP_WIFI_AUTH_OPEN is used.
+                Please select ESP_WIFI_AUTH_WEP/ESP_WIFI_AUTH_WPA_PSK incase AP is operating in WEP/WPA mode.
+    
+            config ESP_WIFI_AUTH_OPEN
+                bool "OPEN"
+            config ESP_WIFI_AUTH_WEP
+                bool "WEP"
+            config ESP_WIFI_AUTH_WPA_PSK
+                bool "WPA PSK"
+            config ESP_WIFI_AUTH_WPA2_PSK
+                bool "WPA2 PSK"
+            config ESP_WIFI_AUTH_WPA_WPA2_PSK
+                bool "WPA/WPA2 PSK"
+            config ESP_WIFI_AUTH_WPA3_PSK
+                bool "WPA3 PSK"
+            config ESP_WIFI_AUTH_WPA2_WPA3_PSK
+                bool "WPA2/WPA3 PSK"
+            config ESP_WIFI_AUTH_WAPI_PSK
+                bool "WAPI PSK"
+        endchoice
+    
+        config NTP_SERVER
+            string "NTP Server"
+            default "pool.ntp.org"
+            help
+                Hostname for NTP Server.
+        
+        config TIMEZONE
+            string "Your TimeZone"
+            default "GMT"
+            help
+                Your local timezone.
+                When it is 0, Greenwich Mean Time.
+            
+    endmenu
+    
+    menu "I2C Master Configuration"
+        config I2C_MASTER_SCL
+            int "I2C SCL GPIO Num"
+            default 6 if IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2 || IDF_TARGET_ESP32H2
+            # default 19 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+            default 21 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+            help
+                GPIO number for I2C Master clock line.
+
+        config I2C_MASTER_SDA
+            int "I2C SDA GPIO Num"
+            default 5 if IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2 || IDF_TARGET_ESP32H2
+            # default 18 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+            default 22 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+            help
+                GPIO number for I2C Master data line.
+
+        config TCA9548A_RESET_GPIO
+            int "I2C TCAP9548A Reset GPIO"
+            default 15 if IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2 || IDF_TARGET_ESP32H2
+            # default 18 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+            default 15 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+            help
+                GPIO Reset TCA9548A
+            
+    endmenu
+
+    menu "EC11 Rotary Button"
+
+        config EC11_GPIO_S1
+            int "EC11_GPIO_S1 Num"
+            default 16 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+            help
+                GPIO Number for A rotary button pin
+
+        config EC11_GPIO_S2
+            int "EC11_GPIO_S2 Num"
+            default 17 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+            help
+                GPIO Number for B rotary button pin
+
+        config ROTARY_BUTTON_GPIO
+            int "ROTARY_BUTTON_GPIO Num"
+            default 4 if IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+            help
+                GPIO Number rotary button pin
+        
+    endmenu
+
+    menu "SPI Flash Config"
+        
+        config FORMAT_IF_MOUNT_FAILED
+            bool "Format the card if mount failed"
+            default n
+            help
+                If this config item is set, format_if_mount_failed will be set to true and the card will be formatted if
+                the mount has failed.
+
+        config PIN_CS
+            int "CS GPIO number"
+            # default 13 if IDF_TARGET_ESP32
+            default  5 if IDF_TARGET_ESP32
+            default 34 if IDF_TARGET_ESP32S2
+            default 34 if IDF_TARGET_ESP32S3
+            default 1  # C3 and others
+            
+        config PIN_CLK
+            int "CLK GPIO number"
+            # default 14 if IDF_TARGET_ESP32
+            default 18 if IDF_TARGET_ESP32
+            default 36 if IDF_TARGET_ESP32S2
+            default 36 if IDF_TARGET_ESP32S3
+            default 5  # C3 and others
+        
+        config PIN_MISO
+            int "MISO GPIO number"
+            # default 2 if IDF_TARGET_ESP32
+            default 19 if IDF_TARGET_ESP32
+            default 37 if IDF_TARGET_ESP32S2
+            default 37 if IDF_TARGET_ESP32S3
+            default 6  # C3 and others
+
+        config PIN_MOSI
+            int "MOSI GPIO number"
+            # default 15 if IDF_TARGET_ESP32
+            default 23 if IDF_TARGET_ESP32
+            default 35 if IDF_TARGET_ESP32S2
+            default 35 if IDF_TARGET_ESP32S3
+            default 4  # C3 and others
+            
+    endmenu
+endmenu
